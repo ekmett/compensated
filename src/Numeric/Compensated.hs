@@ -5,6 +5,7 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE PatternGuards #-}
 --------------------------------------------------------------------
 -- |
 -- Copyright :  (c) Edward Kmett 2013
@@ -31,7 +32,7 @@
 -- * Donald Knuth's \"The Art of Computer Programming, Volume 2: Seminumerical Algorithms\"
 -- * <http://en.wikipedia.org/wiki/Kahan_summation_algorithm>
 --------------------------------------------------------------------
-module Data.Analytics.Numeric.Compensated
+module Numeric.Compensated
   ( Compensable(..)
   , _Compensated
   , Overcompensated
@@ -343,12 +344,12 @@ kahan = Foldable.foldr (+^) mempty
 {-# INLINE kahan #-}
 
 -- (<|) = (+^)
-instance (Bifunctor p, Profunctor p, Functor f, Compensable a, a ~ b) => Cons p f (Compensated a) (Compensated b) a b where
+instance (Reviewable p, Functor f, Compensable a, a ~ b) => Cons p f (Compensated a) (Compensated b) a b where
   _Cons = unto $ \(a, e) -> with e $ \b c -> let y = a - c; t = b + y in compensated t ((t - b) - y)
   {-# INLINE _Cons #-}
 
 -- (|>) = (+^)
-instance (Bifunctor p, Profunctor p, Functor f, Compensable a, a ~ b) => Snoc p f (Compensated a) (Compensated b) a b where
+instance (Reviewable p, Functor f, Compensable a, a ~ b) => Snoc p f (Compensated a) (Compensated b) a b where
   _Snoc = unto $ \(e, a) -> with e $ \b c -> let y = a - c; t = b + y in compensated t ((t - b) - y)
   {-# INLINE _Snoc #-}
 
