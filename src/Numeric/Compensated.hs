@@ -28,8 +28,11 @@
 -- References:
 --
 -- * <http://web.mit.edu/tabbott/Public/quaddouble-debian/qd-2.3.4-old/docs/qd.pdf>
+--
 -- * <http://www.ti3.tuhh.de/paper/rump/OgRuOi05.pdf>
+--
 -- * Donald Knuth's \"The Art of Computer Programming, Volume 2: Seminumerical Algorithms\"
+--
 -- * <http://en.wikipedia.org/wiki/Kahan_summation_algorithm>
 --------------------------------------------------------------------
 module Numeric.Compensated
