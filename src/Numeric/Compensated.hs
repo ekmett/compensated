@@ -53,6 +53,9 @@ import Control.Monad
 import Data.Foldable as Foldable
 import Data.Function (on)
 import Data.Ratio
+import Data.Binary as Binary
+import Data.SafeCopy
+import Data.Serialize as Serialize
 import Data.Semigroup
 import Data.Vector.Unboxed as U
 import Data.Vector.Generic as G
@@ -473,6 +476,21 @@ instance Compensable a => RealFrac (Compensated a) where
     (w, p) -> add p b $ \ x y -> case properFraction x of
       (w',q) -> (w + w', add q y compensated)
   -- {-# INLINE properFraction #-}
+
+instance (Compensable a, Binary a) => Binary (Compensated a) where
+  get = compensated <$> Binary.get <*> Binary.get
+  put m = with m $ \a b -> do
+    Binary.put a
+    Binary.put b
+
+instance (Compensable a, Serialize a) => Serialize (Compensated a) where
+  get = compensated <$> Serialize.get <*> Serialize.get
+  put m = with m $ \a b -> do
+    Serialize.put a
+    Serialize.put b
+
+-- ಠ_ಠ this unnecessarily expects that the format won't change, because I can't derive a better instance.
+instance (Compensable a, Serialize a) => SafeCopy (Compensated a)
 
 instance (Compensable a, Storable a) => Storable (Compensated a) where
   sizeOf _ = sizeOf (undefined :: a) * 2
