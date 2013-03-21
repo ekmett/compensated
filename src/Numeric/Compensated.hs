@@ -53,17 +53,18 @@ module Numeric.Compensated
 import Control.Applicative
 import Control.Lens as L
 import Control.Monad
+import Data.Binary as Binary
+import Data.Data
 import Data.Foldable as Foldable
 import Data.Function (on)
+import Data.Hashable
 import Data.Ratio
-import Data.Binary as Binary
 import Data.SafeCopy
 import Data.Serialize as Serialize
 import Data.Semigroup
 import Data.Vector.Unboxed as U
 import Data.Vector.Generic as G
 import Data.Vector.Generic.Mutable as M
-import Data.Data
 import Foreign.Ptr
 import Foreign.Storable
 import Numeric.Log
@@ -247,6 +248,9 @@ instance Compensable a => Compensable (Compensated a) where
 
 instance Typeable1 Compensated where
   typeOf1 _ = mkTyConApp (mkTyCon3 "analytics" "Data.Analytics.Numeric.Compensated" "Compensated") []
+
+instance (Compensable a, Hashable a) => Hashable (Compensated a) where
+  hashWithSalt n m = with m $ \a b -> hashWithSalt n (a,b)
 
 instance (Compensable a, Data a) => Data (Compensated a) where
   gfoldl f z m = with m $ \a b -> z compensated `f` a `f` b
