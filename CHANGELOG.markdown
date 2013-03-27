@@ -1,3 +1,11 @@
+0.2.0.1
+-------
+* Wider `generic-deriving` version bounds for GHC HEAD compatibility.
+
+0.2
+---
+* Added a `Hashable` instance.
+
 0.1.1.1
 -------
 * Wider `binary` version bounds.
