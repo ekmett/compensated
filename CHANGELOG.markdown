@@ -1,3 +1,7 @@
+0.3
+---
+* Major version bump due to large semantics change in `log-domain`.
+
 0.2.0.1
 -------
 * Wider `generic-deriving` version bounds for GHC HEAD compatibility.
