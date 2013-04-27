@@ -1,3 +1,7 @@
+0.4
+---
+* Added `NFData` and `Serial` instances
+
 0.3
 ---
 * Major version bump due to large semantics change in `log-domain`.

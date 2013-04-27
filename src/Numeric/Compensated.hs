@@ -52,6 +52,7 @@ module Numeric.Compensated
 
 import Control.Applicative
 import Control.Lens as L
+import Control.DeepSeq
 import Control.Monad
 import Data.Binary as Binary
 import Data.Data
@@ -61,6 +62,7 @@ import Data.Hashable
 import Data.Ratio
 import Data.SafeCopy
 import Data.Serialize as Serialize
+import Data.Bytes.Serial as Bytes
 import Data.Semigroup
 import Data.Vector.Unboxed as U
 import Data.Vector.Generic as G
@@ -268,6 +270,10 @@ compensatedConstr = mkConstr compensatedDataType "compensated" [] Prefix
 compensatedDataType :: DataType
 compensatedDataType = mkDataType "Data.Analytics.Numeric.Compensated" [compensatedConstr]
 {-# NOINLINE compensatedDataType #-}
+
+instance (Compensable a, NFData a) => NFData (Compensated a) where
+  rnf m = with m $ \x y -> rnf x `seq` rnf y `seq` ()
+  {-# INLINE rnf #-}
 
 instance (Compensable a, Show a) => Show (Compensated a) where
   showsPrec d m = with m $ \a b -> showParen (d > 10) $
@@ -495,6 +501,12 @@ instance (Compensable a, Serialize a) => Serialize (Compensated a) where
   put m = with m $ \a b -> do
     Serialize.put a
     Serialize.put b
+
+instance (Compensable a, Serial a) => Serial (Compensated a) where
+  deserialize = compensated <$> Bytes.deserialize <*> Bytes.deserialize
+  serialize m = with m $ \a b -> do
+    Bytes.serialize a
+    Bytes.serialize b
 
 -- ಠ_ಠ this unnecessarily expects that the format won't change, because I can't derive a better instance.
 instance (Compensable a, Serialize a) => SafeCopy (Compensated a)
