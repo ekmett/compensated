@@ -1,3 +1,7 @@
+0.4.1
+-----
+* Marked this package `Trustworthy`.
+
 0.4
 ---
 * Added `NFData` and `Serial` instances

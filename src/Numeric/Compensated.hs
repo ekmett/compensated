@@ -6,6 +6,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE PatternGuards #-}
+{-# LANGUAGE Trustworthy #-}
 --------------------------------------------------------------------
 -- |
 -- Copyright :  (c) Edward Kmett 2013
