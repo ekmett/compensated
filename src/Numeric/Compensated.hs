@@ -311,10 +311,12 @@ uncompensated :: Compensable a => Compensated a -> a
 uncompensated c = with c const
 {-# INLINE uncompensated #-}
 
+{-
 type instance Index (Compensated a) = Int
 instance (Applicative f, Compensable a, Compensable b) => Each f (Compensated a) (Compensated b) a b where
   each f m = with m $ \a b -> compensated <$> L.indexed f (0 :: Int) a <*> L.indexed f (1 :: Int) b
   {-# INLINE each #-}
+-}
 
 instance Compensable a => Eq (Compensated a) where
   m == n = with m $ \a b -> with n $ \c d -> a == c && b == d
