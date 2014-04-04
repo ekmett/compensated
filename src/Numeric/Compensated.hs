@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE Trustworthy #-}
@@ -131,7 +132,7 @@ divide :: Compensable a => a -> a -> (a -> a -> r) -> r
 divide a b = with (aX * ms) where
   x0   = recip b
   aX   = times a x0 compensated -- calculate aX
-  m    = 1 <| negate (times b x0 compensated)
+  m    = 1 +^ negate (times b x0 compensated)
   mm   = m*m
   ms   = 1+((m+mm)+m*mm)
 {-# INLINEABLE divide #-}
@@ -249,8 +250,12 @@ instance Compensable a => Compensable (Compensated a) where
   magic = times (magic - 1) (magic - 1) $ \ x y -> compensated x (y + 1)
   {-# INLINE magic #-}
 
+#if __GLASGOW_HASKELL__ < 707
 instance Typeable1 Compensated where
   typeOf1 _ = mkTyConApp (mkTyCon3 "analytics" "Data.Analytics.Numeric.Compensated" "Compensated") []
+#else
+deriving instance Typeable Compensated
+#endif
 
 instance (Compensable a, Hashable a) => Hashable (Compensated a) where
   hashWithSalt n m = with m $ \a b -> hashWithSalt n (a,b)
@@ -311,12 +316,10 @@ uncompensated :: Compensable a => Compensated a -> a
 uncompensated c = with c const
 {-# INLINE uncompensated #-}
 
-{-
 type instance Index (Compensated a) = Int
-instance (Applicative f, Compensable a, Compensable b) => Each f (Compensated a) (Compensated b) a b where
-  each f m = with m $ \a b -> compensated <$> L.indexed f (0 :: Int) a <*> L.indexed f (1 :: Int) b
+instance (Compensable a, Compensable b) => Each (Compensated a) (Compensated b) a b where
+  each f m = with m $ \a b -> compensated <$> f a <*> f b
   {-# INLINE each #-}
--}
 
 instance Compensable a => Eq (Compensated a) where
   m == n = with m $ \a b -> with n $ \c d -> a == c && b == d
@@ -361,16 +364,6 @@ instance Compensable a => Monoid (Compensated a) where
 kahan :: (Foldable f, Compensable a) => f a -> Compensated a
 kahan = Foldable.foldr (+^) mempty
 {-# INLINE kahan #-}
-
--- (<|) = (+^)
-instance (Reviewable p, Functor f, Compensable a, a ~ b) => Cons p f (Compensated a) (Compensated b) a b where
-  _Cons = unto $ \(a, e) -> with e $ \b c -> let y = a - c; t = b + y in compensated t ((t - b) - y)
-  {-# INLINE _Cons #-}
-
--- (|>) = (+^)
-instance (Reviewable p, Functor f, Compensable a, a ~ b) => Snoc p f (Compensated a) (Compensated b) a b where
-  _Snoc = unto $ \(e, a) -> with e $ \b c -> let y = a - c; t = b + y in compensated t ((t - b) - y)
-  {-# INLINE _Snoc #-}
 
 instance Compensable a => Num (Compensated a) where
   m + n =
@@ -662,7 +655,7 @@ instance Compensable a => Floating (Compensated a) where
   -- | Hardware sqrt improved by the Babylonian algorithm (Newton Raphson)
   sqrt m = with (z4 + m/z4) $ on compensated (/2) where
     z0 = sqrt (m^.primal)
-    z1 = with (z0 <| (m / compensated z0 0)) $ on compensated (/2)
+    z1 = with (z0 +^ (m / compensated z0 0)) $ on compensated (/2)
     z2 = with (z1 + m/z1) $ on compensated (/2)
     z3 = with (z2 + m/z2) $ on compensated (/2)
     z4 = with (z3 + m/z3) $ on compensated (/2)
