@@ -1,3 +1,8 @@
+0.6
+---
+* Updated for `lens` 4.
+* Bug fix in `(/=)`
+
 0.4.1
 -----
 * Marked this package `Trustworthy`.
