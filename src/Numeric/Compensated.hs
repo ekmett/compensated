@@ -320,7 +320,7 @@ instance (Applicative f, Compensable a, Compensable b) => Each f (Compensated a)
 
 instance Compensable a => Eq (Compensated a) where
   m == n = with m $ \a b -> with n $ \c d -> a == c && b == d
-  m /= n = with m $ \a b -> with n $ \c d -> a /= c && b /= d
+  m /= n = with m $ \a b -> with n $ \c d -> a /= c || b /= d
   {-# INLINE (==) #-}
 
 instance Compensable a => Ord (Compensated a) where
