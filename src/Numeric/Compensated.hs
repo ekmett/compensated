@@ -675,3 +675,11 @@ instance (Compensable a, Precise a) => Precise (Compensated a) where
   {-# INLINE log1p #-}
   expm1 a = exp a - 1
   {-# INLINE expm1 #-}
+  log1mexp a | a <= log 2 = log (negate (expm1 (negate a)))
+             | otherwise  = log1p (negate (exp (negate a)))
+  {-# INLINE log1mexp #-}
+  log1pexp a
+    | a <= 18   = log1p (exp a)
+    | a <= 100  = a + exp (negate a)
+    | otherwise = a
+  {-# INLINE log1pexp #-}
