@@ -35,10 +35,6 @@ flag test-doctests
   default: True
   manual: True
 
-flag lib-Werror
-  default: False
-  manual: True
-
 library
   build-depends:
     base                      >= 4.3      && < 5,
@@ -61,9 +57,6 @@ library
   exposed-modules:
     Numeric.Compensated
 
-  if flag(lib-Werror)
-    ghc-options: -Werror
-
   ghc-options: -Wall -fwarn-tabs -O2
   hs-source-dirs: src
 
@@ -84,6 +77,3 @@ test-suite doctests
       generic-deriving,
       semigroups     >= 0.9,
       simple-reflect >= 0.3.1
-
-  if impl(ghc<7.6.1)
-    ghc-options: -Werror
