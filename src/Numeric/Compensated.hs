@@ -8,9 +8,14 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE Trustworthy #-}
+
+#ifndef MIN_VERSION_vector
+#define MIN_VERSION_vector(x,y,z) 1
+#endif
+
 --------------------------------------------------------------------
 -- |
--- Copyright :  (c) Edward Kmett 2013
+-- Copyright :  (c) Edward Kmett 2013-2015
 -- License   :  BSD3
 -- Maintainer:  Edward Kmett <ekmett@gmail.com>
 -- Stability :  experimental
@@ -52,7 +57,9 @@ module Numeric.Compensated
   , square
   ) where
 
+#if __GLASGOW_HASKELL__ < 710
 import Control.Applicative
+#endif
 import Control.Lens as L
 import Control.DeepSeq
 import Control.Monad
@@ -561,6 +568,10 @@ instance (Compensable a, Unbox a) => M.MVector U.MVector (Compensated a) where
   {-# INLINE basicUnsafeMove #-}
   basicUnsafeGrow (MV_Compensated v) n = MV_Compensated `liftM` M.basicUnsafeGrow v n
   {-# INLINE basicUnsafeGrow #-}
+#if MIN_VERSION_vector(0,11,0)
+  basicInitialize (MV_Compensated v) = M.basicInitialize v
+  {-# INLINE basicInitialize #-}
+#endif
 
 instance (Compensable a, Unbox a) => G.Vector U.Vector (Compensated a) where
   basicUnsafeFreeze (MV_Compensated v) = V_Compensated `liftM` G.basicUnsafeFreeze v

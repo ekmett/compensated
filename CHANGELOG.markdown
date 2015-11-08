@@ -1,3 +1,7 @@
+0.7
+---
+* Support for newer `bifunctors`, `cereal`, `deepseq`, `generic-deriving`, `semigroupoid` and `vector` dependencies.`
+
 0.6
 ---
 * Updated for `lens` 4.
