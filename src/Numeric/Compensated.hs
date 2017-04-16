@@ -98,8 +98,8 @@ import Text.Show as T
 add :: Num a => a -> a -> (a -> a -> r) -> r
 add a b k = k x y where
   x = a + b
-  z = x - a
-  y = (a - (x - z)) + (b - z)
+  q = x - a
+  y = b - q
 {-# INLINE add #-}
 
 -- | @'fadd' a b k@ computes @k x y@ such that
