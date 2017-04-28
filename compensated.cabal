@@ -35,6 +35,12 @@ flag test-doctests
   default: True
   manual: True
 
+custom-setup
+  setup-depends:
+    base          >= 4.3 && <5,
+    Cabal         >= 1.10,
+    cabal-doctest >= 1 && <1.1
+
 library
   build-depends:
     base                      >= 4.3      && < 5,
@@ -70,9 +76,7 @@ test-suite doctests
   else
     build-depends:
       base,
-      directory      >= 1.0,
       doctest        >= 0.9.1,
-      filepath,
       generic-deriving,
       semigroups     >= 0.9,
       simple-reflect >= 0.3.1
