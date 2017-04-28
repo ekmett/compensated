@@ -1,7 +1,7 @@
 compensated
 ===========
 
-[![Build Status](https://secure.travis-ci.org/analytics/compensated.png)](http://travis-ci.org/analytics/compensated)
+[![Hackage](https://img.shields.io/hackage/v/compensated.svg)](https://hackage.haskell.org/package/compensated) [![Build Status](https://secure.travis-ci.org/analytics/compensated.png)](http://travis-ci.org/analytics/compensated)
 
 This package provides a form of compensated arithmetic that lets you perform many operations on chains of doubles at higher precision.
 
