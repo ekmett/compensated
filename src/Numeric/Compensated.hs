@@ -2,7 +2,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE DeriveDataTypeable #-}
@@ -87,6 +86,8 @@ import Text.Show as T
 
 {-# ANN module "hlint: ignore Use -" #-}
 {-# ANN module "hlint: ignore Use curry" #-}
+{-# ANN module "hlint: ignore Eta reduce" #-}
+{-# ANN module "hlint: ignore Unused LANGUAGE pragma" #-}
 
 -- | @'add' a b k@ computes @k x y@ such that
 --
