@@ -71,7 +71,9 @@ import Data.Ratio
 import Data.SafeCopy
 import Data.Serialize as Serialize
 import Data.Bytes.Serial as Bytes
+#if !(MIN_VERSION_base(4,11,0))
 import Data.Semigroup
+#endif
 import Data.Vector.Unboxed as U
 import Data.Vector.Generic as G
 import Data.Vector.Generic.Mutable as M
