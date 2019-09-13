@@ -513,7 +513,12 @@ instance (Compensable a, Serial a) => Serial (Compensated a) where
     Bytes.serialize b
 
 -- ಠ_ಠ this unnecessarily expects that the format won't change, because I can't derive a better instance.
-instance (Compensable a, Serialize a) => SafeCopy (Compensated a)
+instance (Compensable a, Serialize a) => SafeCopy (Compensated a) where
+  -- safecopy-0.10.0 changed its default implementations for these methods.
+  -- The implementations below are copied from the pre-0.10.0 defaults.
+  errorTypeName _ = "<unknown type>"
+  getCopy = contain Serialize.get
+  putCopy = contain . Serialize.put
 
 instance (Compensable a, Storable a) => Storable (Compensated a) where
   sizeOf _ = sizeOf (undefined :: a) * 2
