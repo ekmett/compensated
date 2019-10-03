@@ -288,7 +288,7 @@ compensatedDataType = mkDataType "Data.Analytics.Numeric.Compensated" [compensat
 {-# NOINLINE compensatedDataType #-}
 
 instance (Compensable a, NFData a) => NFData (Compensated a) where
-  rnf m = with m $ \x y -> rnf x `seq` rnf y `seq` ()
+  rnf m = with m $ \x y -> rnf x `seq` rnf y
   {-# INLINE rnf #-}
 
 instance (Compensable a, Show a) => Show (Compensated a) where
