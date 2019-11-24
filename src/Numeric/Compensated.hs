@@ -79,7 +79,7 @@ import Data.Vector.Generic as G
 import Data.Vector.Generic.Mutable as M
 import Foreign.Ptr
 import Foreign.Storable
-import Numeric.Log
+import Numeric (Floating(..))
 import Text.Read as T
 import Text.Show as T
 
@@ -206,7 +206,7 @@ c *^ m =
   renorm x3 x4 (y4 + y2)
 {-# INLINE (*^) #-}
 
-class (RealFrac a, Precise a, Floating a) => Compensable a where
+class (RealFrac a, Floating a) => Compensable a where
   -- | This provides a numeric data type with effectively doubled precision by
   -- using Knuth's error free transform and a number of custom compensated
   -- arithmetic circuits.
@@ -679,17 +679,7 @@ instance Compensable a => Floating (Compensated a) where
     z3 = with (z2 + m/z2) $ on compensated (/2)
     z4 = with (z3 + m/z3) $ on compensated (/2)
 
-  -- (**)    = error "TODO"
-  pi      = error "TODO"
-  asin    = error "TODO"
-  atan    = error "TODO"
-  acos    = error "TODO"
-  asinh   = error "TODO"
-  atanh   = error "TODO"
-  acosh   = error "TODO"
-
--- | TODO: do this right!
-instance (Compensable a, Precise a) => Precise (Compensated a) where
+  -- TODO: do log1p, expm1, log1mexp, log1pexp right!
   log1p a = log (1 + a)
   {-# INLINE log1p #-}
   expm1 a = exp a - 1
@@ -702,3 +692,12 @@ instance (Compensable a, Precise a) => Precise (Compensated a) where
     | a <= 100  = a + exp (negate a)
     | otherwise = a
   {-# INLINE log1pexp #-}
+
+  -- (**)    = error "TODO"
+  pi      = error "TODO"
+  asin    = error "TODO"
+  atan    = error "TODO"
+  acos    = error "TODO"
+  asinh   = error "TODO"
+  atanh   = error "TODO"
+  acosh   = error "TODO"

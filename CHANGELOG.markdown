@@ -1,3 +1,10 @@
+0.8 [????.??.??]
+----------------
+* Support building with `log-domain-0.13` by removing the `Precise` superclass
+  from `Compensable`. `log-domain-0.13` has removed the `Precise` class since
+  its methods are now available in `Floating` as of `base-4.9`/GHC 8.0. As a
+  result, this release drops support for earlier versions of `base`/GHC.
+
 0.7.3 [2019.09.13]
 ------------------
 * Allow building with `safecopy-0.10`.
