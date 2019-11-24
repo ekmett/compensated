@@ -1,4 +1,4 @@
-0.8 [????.??.??]
+0.8 [2019.11.24]
 ----------------
 * Support building with `log-domain-0.13` by removing the `Precise` superclass
   from `Compensable`. `log-domain-0.13` has removed the `Precise` class since
