@@ -90,9 +90,9 @@ test-suite doctests
 
 benchmark criterion
   type:           exitcode-stdio-1.0
-  main-is:        benchmark.hs
+  main-is:        criterion.hs
   ghc-options:    -Wall
-  hs-source-dirs: tests
+  hs-source-dirs: benchmarks
   build-depends:
     base,
     compensated,
