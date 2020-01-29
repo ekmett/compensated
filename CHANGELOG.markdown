@@ -1,3 +1,7 @@
+next [????.??.??]
+-----------------
+* Add a benchmark suite.
+
 0.8 [2019.11.24]
 ----------------
 * Support building with `log-domain-0.13` by removing the `Precise` superclass
