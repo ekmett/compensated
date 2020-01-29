@@ -61,7 +61,6 @@ import Control.Applicative
 #endif
 import Control.Lens as L
 import Control.DeepSeq
-import Control.Monad
 import Data.Binary as Binary
 import Data.Data
 import Data.Foldable as Foldable
@@ -558,11 +557,11 @@ instance (Compensable a, Unbox a) => M.MVector U.MVector (Compensated a) where
   {-# INLINE basicUnsafeSlice #-}
   basicOverlaps (MV_Compensated v1) (MV_Compensated v2) = M.basicOverlaps v1 v2
   {-# INLINE basicOverlaps #-}
-  basicUnsafeNew n = MV_Compensated `liftM` M.basicUnsafeNew n
+  basicUnsafeNew n = MV_Compensated <$> M.basicUnsafeNew n
   {-# INLINE basicUnsafeNew #-}
-  basicUnsafeReplicate n m = with m $ \x y -> MV_Compensated `liftM` M.basicUnsafeReplicate n (x,y)
+  basicUnsafeReplicate n m = with m $ \x y -> MV_Compensated <$> M.basicUnsafeReplicate n (x,y)
   {-# INLINE basicUnsafeReplicate #-}
-  basicUnsafeRead (MV_Compensated v) i = uncurry compensated `liftM` M.basicUnsafeRead v i
+  basicUnsafeRead (MV_Compensated v) i = uncurry compensated <$> M.basicUnsafeRead v i
   {-# INLINE basicUnsafeRead #-}
   basicUnsafeWrite (MV_Compensated v) i m = with m $ \ x y -> M.basicUnsafeWrite v i (x,y)
   {-# INLINE basicUnsafeWrite #-}
@@ -574,7 +573,7 @@ instance (Compensable a, Unbox a) => M.MVector U.MVector (Compensated a) where
   {-# INLINE basicUnsafeCopy #-}
   basicUnsafeMove (MV_Compensated v1) (MV_Compensated v2) = M.basicUnsafeMove v1 v2
   {-# INLINE basicUnsafeMove #-}
-  basicUnsafeGrow (MV_Compensated v) n = MV_Compensated `liftM` M.basicUnsafeGrow v n
+  basicUnsafeGrow (MV_Compensated v) n = MV_Compensated <$> M.basicUnsafeGrow v n
   {-# INLINE basicUnsafeGrow #-}
 #if MIN_VERSION_vector(0,11,0)
   basicInitialize (MV_Compensated v) = M.basicInitialize v
@@ -582,16 +581,16 @@ instance (Compensable a, Unbox a) => M.MVector U.MVector (Compensated a) where
 #endif
 
 instance (Compensable a, Unbox a) => G.Vector U.Vector (Compensated a) where
-  basicUnsafeFreeze (MV_Compensated v) = V_Compensated `liftM` G.basicUnsafeFreeze v
+  basicUnsafeFreeze (MV_Compensated v) = V_Compensated <$> G.basicUnsafeFreeze v
   {-# INLINE basicUnsafeFreeze #-}
-  basicUnsafeThaw (V_Compensated v) = MV_Compensated `liftM` G.basicUnsafeThaw v
+  basicUnsafeThaw (V_Compensated v) = MV_Compensated <$> G.basicUnsafeThaw v
   {-# INLINE basicUnsafeThaw #-}
   basicLength (V_Compensated v) = G.basicLength v
   {-# INLINE basicLength #-}
   basicUnsafeSlice i n (V_Compensated v) = V_Compensated $ G.basicUnsafeSlice i n v
   {-# INLINE basicUnsafeSlice #-}
   basicUnsafeIndexM (V_Compensated v) i
-                = uncurry compensated `liftM` G.basicUnsafeIndexM v i
+                = uncurry compensated <$> G.basicUnsafeIndexM v i
   {-# INLINE basicUnsafeIndexM #-}
   basicUnsafeCopy (MV_Compensated mv) (V_Compensated v)
                 = G.basicUnsafeCopy mv v
