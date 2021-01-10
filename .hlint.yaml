@@ -1,1 +1,4 @@
-- arguments: [--cpp-define=HLINT, --cpp-ansi]
+- arguments: [--cpp-ansi]
+
+- ignore: { name: Use curry }
+- ignore: { name: Unused LANGUAGE pragma }
