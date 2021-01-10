@@ -1,7 +1,7 @@
 compensated
 ===========
 
-[![Hackage](https://img.shields.io/hackage/v/compensated.svg)](https://hackage.haskell.org/package/compensated) [![Build Status](https://secure.travis-ci.org/ekmett/compensated.png)](http://travis-ci.org/ekmett/compensated)
+[![Hackage](https://img.shields.io/hackage/v/compensated.svg)](https://hackage.haskell.org/package/compensated) [![Build Status](https://github.com/ekmett/compensated/workflows/Haskell-CI/badge.svg)](https://github.com/ekmett/compensated/actions?query=workflow%3AHaskell-CI)
 
 This package provides a form of compensated arithmetic that lets you perform many operations on chains of doubles at higher precision.
 
