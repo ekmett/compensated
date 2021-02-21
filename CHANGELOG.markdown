@@ -1,3 +1,7 @@
+next [????.??.??]
+-----------------
+* Fix the build with `safecopy-0.10.4` or later.
+
 0.8.2 [2021.02.17]
 ------------------
 * Allow building with `lens-5.*`.

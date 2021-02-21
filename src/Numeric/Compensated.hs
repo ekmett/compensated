@@ -509,7 +509,7 @@ instance (Compensable a, Serial a) => Serial (Compensated a) where
     Bytes.serialize b
 
 -- ಠ_ಠ this unnecessarily expects that the format won't change, because I can't derive a better instance.
-instance (Compensable a, Serialize a) => SafeCopy (Compensated a) where
+instance (Compensable a, Serialize a, Typeable a) => SafeCopy (Compensated a) where
   -- safecopy-0.10.0 changed its default implementations for these methods.
   -- The implementations below are copied from the pre-0.10.0 defaults.
   errorTypeName _ = "<unknown type>"
