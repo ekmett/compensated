@@ -361,8 +361,10 @@ instance Compensable a => Semigroup (Compensated a) where
 instance Compensable a => Monoid (Compensated a) where
   mempty = compensated 0 0
   {-# INLINE mempty #-}
+#if !(MIN_VERSION_base(4,11,0))
   mappend = (+)
   {-# INLINE mappend #-}
+#endif
 
 -- | Perform Kahan summation over a list.
 kahan :: (Foldable f, Compensable a) => f a -> Compensated a
