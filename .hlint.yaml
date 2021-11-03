@@ -2,3 +2,4 @@
 
 - ignore: { name: Use curry }
 - ignore: { name: Unused LANGUAGE pragma }
+- ignore: {name: Eta reduce, within: [Numeric.Compensated]}
